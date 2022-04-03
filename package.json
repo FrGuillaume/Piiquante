@@ -18,9 +18,13 @@
   },
   "homepage": "https://github.com/FrGuillaume/Piiquante#readme",
   "dependencies": {
+    "bcrypt": "^5.0.1",
     "express": "^4.17.3",
     "express-mongo-sanitize": "^2.2.0",
+    "fs": "^0.0.1-security",
     "helmet": "^5.0.2",
-    "mongoose": "^6.2.9"
+    "jsonwebtoken": "^8.5.1",
+    "mongoose": "^6.2.9",
+    "nodemon": "^2.0.15"
   }
 }
