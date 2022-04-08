@@ -1,4 +1,5 @@
 const Sauce = require("../models/Sauce");
+const User = require("../models/User");
 const fs = require("fs");
 
 // Récupérer toutes mes sauces
@@ -26,6 +27,7 @@ exports.createSauce = (req, res, next) => {
   // On créé une novelle instance du modèle Sauce
   const sauce = new Sauce({
     ...sauceObject,
+    // On indique la route pour l'image
     imageUrl: `${req.protocol}://${req.get("host")}/images/${
       req.file.filename
     }`,
@@ -43,6 +45,11 @@ exports.createSauce = (req, res, next) => {
 
 // Modifier une sauce
 exports.updateSauce = (req, res, next) => {
+  if (Sauce.userId !== User._id) {
+    return res.status(403).json({
+      message: "Vous n'avez pas les droits pour modifier cette sauce",
+    });
+  }
   // On vérifie si la modification contient une image
   const sauceObject = req.file
     ? {
