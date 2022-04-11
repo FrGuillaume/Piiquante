@@ -9,6 +9,14 @@ exports.addLikeOrDislike = (req, res, next) => {
   let sauceId = req.params.id;
 
   if (like === 1) {
+    // On vérifie que l'utilisateur n'est pas déjà des le tableau des userslikes
+    Sauce.findOne({ _id: req.params.id }).then((sauce) => {
+      if (usersLiked[userId]) {
+        res.status(400).json({
+          error: new Error("Vous avez déjà liker cette sauce !"),
+        });
+      }
+    });
     // Si il s'agit d'un like
     Sauce.updateOne(
       {
@@ -36,6 +44,15 @@ exports.addLikeOrDislike = (req, res, next) => {
       );
   }
   if (like === -1) {
+    // On vérifie que l'utilisateur n'est pas déjà des le tableau des usersdislikes
+    Sauce.findOne({ _id: req.params.id }).then((sauce) => {
+      if (usersDisliked[userId]) {
+        res.status(400).json({
+          error: new Error("Vous avez déjà liker cette sauce !"),
+        });
+      }
+    });
+
     Sauce.updateOne(
       // S'il s'agit d'un dislike
       {

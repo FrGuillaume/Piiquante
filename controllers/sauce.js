@@ -45,11 +45,18 @@ exports.createSauce = (req, res, next) => {
 
 // Modifier une sauce
 exports.updateSauce = (req, res, next) => {
-  if (Sauce.userId !== User._id) {
-    return res.status(403).json({
-      message: "Vous n'avez pas les droits pour modifier cette sauce",
-    });
-  }
+  Sauce.findOne({ _id: req.params.id }).then((sauce) => {
+    if (!sauce) {
+      res.status(404).json({
+        error: new Error("Objet non trouvé !"),
+      });
+    }
+    if (sauce.userId !== req.auth.userId) {
+      return res.status(403).json({
+        error: new Error("unauthorized request !"),
+      });
+    }
+  });
   // On vérifie si la modification contient une image
   const sauceObject = req.file
     ? {
@@ -70,6 +77,19 @@ exports.updateSauce = (req, res, next) => {
 
 // Supprimer une sauce
 exports.deleteSauce = (req, res, next) => {
+  Sauce.findOne({ _id: req.params.id }).then((sauce) => {
+    if (!sauce) {
+      res.status(404).json({
+        error: new Error("Objet non trouvé !"),
+      });
+    }
+    if (sauce.userId !== req.auth.userId) {
+      return res.status(403).json({
+        error: new Error("unauthorized request !"),
+      });
+    }
+  });
+
   Sauce.findOne({ _id: req.params.id })
     .then((sauce) => {
       const filename = sauce.imageUrl.split("/images/")[1];

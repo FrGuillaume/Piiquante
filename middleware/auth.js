@@ -13,6 +13,8 @@ module.exports = (req, res, next) => {
     // On extrait l'Id utilsiateur du token
     const userId = decodedToken.userId;
 
+    req.auth = { userId };
+
     // On vérifie que le token est bien celui de l'id utilisateur
     if (req.body.userId && req.body.userId !== userId) {
       throw "User Id non valable !";

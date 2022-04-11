@@ -1,9 +1,9 @@
-To launch the server :
+To launch the server
 
     Go to /backend
     --> npm start
 
-To launch the frontend :
+To launch the frontend
 
     Go to /frontend
     --> npm start
