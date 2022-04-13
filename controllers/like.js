@@ -1,4 +1,5 @@
 const Sauce = require("../models/Sauce");
+const User = require("../models/User");
 
 exports.addLikeOrDislike = (req, res, next) => {
   // Like présent dans le body
@@ -11,7 +12,8 @@ exports.addLikeOrDislike = (req, res, next) => {
   if (like === 1) {
     // On vérifie que l'utilisateur n'est pas déjà des le tableau des userslikes
     Sauce.findOne({ _id: req.params.id }).then((sauce) => {
-      if (usersLiked[userId]) {
+      if (sauce.usersLiked[sauce.userId]) {
+        console.log(sauce.userId);
         res.status(400).json({
           error: new Error("Vous avez déjà liker cette sauce !"),
         });
@@ -46,7 +48,7 @@ exports.addLikeOrDislike = (req, res, next) => {
   if (like === -1) {
     // On vérifie que l'utilisateur n'est pas déjà des le tableau des usersdislikes
     Sauce.findOne({ _id: req.params.id }).then((sauce) => {
-      if (usersDisliked[userId]) {
+      if (sauce.usersDisliked[sauce.userId]) {
         res.status(400).json({
           error: new Error("Vous avez déjà liker cette sauce !"),
         });
